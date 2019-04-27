@@ -1,115 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="32dp"
-    android:orientation="vertical"
-    tools:context=".AddQuestion">
+    android:layout_height="match_parent">
 
-
-
-    <EditText
-        android:layout_margin="16dp"
-        android:id="@+id/question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="What's your question?"
-        android:textSize="23sp"
-        android:textAlignment="center"
-        />
-
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/add_prog"
+        android:layout_marginTop="300dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Pick a image: "
-            android:padding="8dp"
-            android:textAlignment="center"
-            android:textColor="#000"
-            android:textSize="22sp" />
-
-        <ImageButton
-            android:id="@+id/photoPickerButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/colorPrimary"
-            android:background="@android:drawable/ic_menu_gallery" />
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/imgViewer"
-        android:layout_gravity="center_horizontal"/>
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        tools:context=".AddQuestion">
+
+
+        <EditText
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="What's your question?"
+            android:textAlignment="center"
+            android:textSize="23sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:padding="16dp"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="Answer"
-                android:id="@+id/answer"
                 android:padding="8dp"
-                android:inputType="textShortMessage"
-                android:layout_weight="10"
+                android:text="Pick a image: "
                 android:textAlignment="center"
                 android:textColor="#000"
                 android:textSize="22sp" />
-            <Button
-                android:id="@+id/addAns"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_gravity="center_vertical"
-                android:background="#000"
-                android:padding="8dp"
-                android:text="Add"
-                android:textColor="#fff" />
 
+            <ImageButton
+                android:id="@+id/photoPickerButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:background="@android:drawable/ic_menu_gallery"
+                android:backgroundTint="@color/colorPrimary" />
         </LinearLayout>
 
-        <TextView
+        <ImageView
+            android:id="@+id/imgViewer"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:id="@+id/ansListTView"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/rgroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/option1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/radio_button_gap"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/option2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/radio_button_gap" />
+
+                <RadioButton
+                    android:id="@+id/option3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/radio_button_gap" />
+
+                <RadioButton
+                    android:id="@+id/option4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/radio_button_gap" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/linlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/rgroup"
+                android:layout_toRightOf="@+id/rgroup"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/eto1"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="option1" />
+
+                <EditText
+                    android:id="@+id/eto2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="option2" />
+
+                <EditText
+                    android:id="@+id/eto3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="option3" />
+
+                <EditText
+                    android:id="@+id/eto4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="option4" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/upload"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textAlignment="center"/>
-
-
+            android:layout_margin="8dp"
+            android:background="#039BE5"
+            android:padding="8dp"
+            android:text="Upload"
+            android:textColor="#fff" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp"
-        android:background="#039BE5"
-        android:padding="8dp"
-        android:text="Upload"
-        android:textColor="#fff" />
-
-</LinearLayout>
+</FrameLayout>
