@@ -129,7 +129,7 @@ public class AddQuestion extends AppCompatActivity {
                             photoUrl = downloadUrl.toString();
 
                             // upload to firebase real time database
-                            QnA qAndA = new QnA(question, photoUrl,"op1","op2","op3","op4");
+                            QnA qAndA = new QnA(question, photoUrl,"op1","op2","op3","op4",1);
                             mQnADatabaseReference.push().setValue(qAndA).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
