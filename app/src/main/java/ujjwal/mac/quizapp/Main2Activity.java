@@ -2,6 +2,7 @@ package ujjwal.mac.quizapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
@@ -11,20 +12,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
@@ -44,13 +46,17 @@ public class Main2Activity extends AppCompatActivity
 
     RadioButton o1, o2, o3, o4;
     private static int FIRST_ENTRY_IN_DATABASE = 0;
-
-
+    ProgressBar progressBar;
+    FrameLayout main_layout;
+    TextView no_quests;
+    Button next;
+    TextView scoreTV;
     // game database
     private ArrayList<QnA> database;
 
     // game variables
     private String question;
+    private int current_index;
     private int total;
     private HashMap<String, Integer> score = new HashMap<>();
     private int difficulty = 3;
@@ -84,9 +90,19 @@ public class Main2Activity extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mQnADatabaseReference = mFirebaseDatabase.getReference().child("questions");
 
+
+        scoreTV = findViewById(R.id.score);
+        progressBar = findViewById(R.id.pbHeaderProgress);
+        main_layout = findViewById(R.id.main_layout);
+        no_quests = findViewById(R.id.noQuest);
+        current_index = 0;
+        total = 0;
+        progressBar.setVisibility(View.VISIBLE);
+        no_quests.setVisibility(View.VISIBLE);
+        main_layout.setVisibility(View.INVISIBLE);
         // loading game data
         loadQAndA();
-
+        next = findViewById(R.id.next);
         o1 = findViewById(R.id.option1);
         o2 = findViewById(R.id.option2);
         o3 = findViewById(R.id.option3);
@@ -105,7 +121,7 @@ public class Main2Activity extends AppCompatActivity
 
         // Set childEventListener on mQnADatabaseReference
         // For actively listening to changes in firebase's real time database
-        if(mChildEventListener == null){
+        if (mChildEventListener == null) {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -113,23 +129,31 @@ public class Main2Activity extends AppCompatActivity
                     QnA qAndA = dataSnapshot.getValue(QnA.class);
                     database.add(qAndA);
 
-                    if (FIRST_ENTRY_IN_DATABASE == 0){
+                    if (FIRST_ENTRY_IN_DATABASE == 0) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        no_quests.setVisibility(View.INVISIBLE);
+                        main_layout.setVisibility(View.VISIBLE);
+                        setClickListeners();
                         loadNewQandI();
                     }
                     FIRST_ENTRY_IN_DATABASE = 1;
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
 
                 @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
 
                 @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(DatabaseError databaseError) {
+                }
             };
 
             // Event Listener for reading data from real time database
@@ -137,43 +161,43 @@ public class Main2Activity extends AppCompatActivity
         }
     }
 
+    private void setClickListeners() {
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //checkAnswer();
+                loadNewQandI();
+            }
+        });
+    }
+
+    private void showProg() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProg() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
     private void loadNewQandI() {
 
-        // end of questions is not visible
+        showProg();
+        scoreTV.setText(String.valueOf(total));
+        next.setVisibility(View.VISIBLE);
 
-
-
-        // preloader
-
-        // initialize turn variables
-        total = 0;
-
-        // pick a question from set
-        Random random = new Random(System.nanoTime());
-        currentQnA = database.get(random.nextInt(database.size()));
-        question = currentQnA.getQuestion();
-
-        // display question text
-        TextView questionView = (TextView) findViewById(R.id.question);
-        questionView.setText(question);
-
-        //get total answers for the question
-
-
-        //if the question is accessed for the first time, add it to the array
-        if(!score.containsKey(question)){
-            score.put(question, 0);
+        if (current_index >= database.size()) {
+            Toast.makeText(this, "no more questions", Toast.LENGTH_SHORT).show();
+            next.setVisibility(View.INVISIBLE);
+            hideProg();
+            return;
         }
-
-        // display game variables
-        //TextView scoreTotal = (TextView) findViewById(R.id.scoreTotal);
-        //String out = "Score: " + Integer.toString(score.get(question)) + "/Total: " + Integer.toString(total);
-        //scoreTotal.setText(out);
-
-
-        // Background task for fetching image of a question
+        // pick a question from set
+        currentQnA = database.get(current_index);
         new AsyncTask<Void, Void, Void>() {
             Bitmap btmp;
+
             @Override
             protected Void doInBackground(Void... params) {
                 if (Looper.myLooper() == null) {
@@ -185,14 +209,16 @@ public class Main2Activity extends AppCompatActivity
                             with(Main2Activity.this).
                             asBitmap().
                             load(currentQnA.getPhotoUrl()).
-                            into(1000,1000).
+                            into(1000, 1000).
                             get();
                     currentImage = btmp;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Toast.makeText(Main2Activity.this, "Could not load image", Toast.LENGTH_SHORT).show();
+                    hideProg();
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void dummy) {
                 if (null != btmp) {
@@ -201,17 +227,25 @@ public class Main2Activity extends AppCompatActivity
                     if (btmp != null) {
                         displayImage(btmp);
                     }
-                    // remove preloader
-                    //TODO
+                    hideProg();
                 }
             }
         }.execute();
+        // if (current_index == database.size() - 1)
+        //    next.setVisibility(View.INVISIBLE);
 
-//        Log.d("URL", currentQnA.getPhotoUrl());
+        question = currentQnA.getQuestion();
+        o1.setText(currentQnA.getOption1());
+        o2.setText(currentQnA.getOption2());
+        o3.setText(currentQnA.getOption3());
+        o4.setText(currentQnA.getOption4());
 
+        TextView questionView = (TextView) findViewById(R.id.question);
+        questionView.setText(question);
+        current_index += 1;
     }
 
-    private void displayImage(Bitmap btmp){
+    private void displayImage(Bitmap btmp) {
         // get segmented images
         ArrayList<Bitmap> imgs = splitBitmap(btmp);
 
@@ -261,7 +295,7 @@ public class Main2Activity extends AppCompatActivity
 
     private class ImageAdapter extends BaseAdapter {
         private Context mContext;
-        public ArrayList <Bitmap> imgs = new ArrayList<>();
+        public ArrayList<Bitmap> imgs = new ArrayList<>();
 
         public ImageAdapter(Context c, ArrayList<Bitmap> imgs) {
             mContext = c;
@@ -297,7 +331,6 @@ public class Main2Activity extends AppCompatActivity
 
         }
     }
-
 
 
     @Override

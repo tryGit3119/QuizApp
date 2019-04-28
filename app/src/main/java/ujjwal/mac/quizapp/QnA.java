@@ -1,15 +1,15 @@
 package ujjwal.mac.quizapp;
 
 public class QnA {
-    private String id , question, photoUrl, option1, option2, option3, option4;
+    private String id, question, photoUrl, option1, option2, option3, option4;
     private int correct_option;
 
     public QnA() {
     }
 
-    public QnA(String id , String question, String photoUrl, String option1, String option2, String option3, String option4, int correct_option) {
+    public QnA(String id, String question, String photoUrl, String option1, String option2, String option3, String option4, int correct_option) {
         this.question = question;
-        this.id = id ;
+        this.id = id;
         this.photoUrl = photoUrl;
         this.option1 = option1;
         this.option2 = option2;
