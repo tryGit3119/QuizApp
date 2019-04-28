@@ -3,6 +3,7 @@ package ujjwal.mac.quizapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -37,7 +40,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Random;
 
 
@@ -51,14 +53,15 @@ public class Main2Activity extends AppCompatActivity
     TextView no_quests;
     Button next;
     TextView scoreTV;
+    LinearLayout result_color;
     // game database
     private ArrayList<QnA> database;
+
 
     // game variables
     private String question;
     private int current_index;
     private int total;
-    private HashMap<String, Integer> score = new HashMap<>();
     private int difficulty = 3;
     private Bitmap currentImage;
 
@@ -91,6 +94,7 @@ public class Main2Activity extends AppCompatActivity
         mQnADatabaseReference = mFirebaseDatabase.getReference().child("questions");
 
 
+        result_color = findViewById(R.id.my_toolbar);
         scoreTV = findViewById(R.id.score);
         progressBar = findViewById(R.id.pbHeaderProgress);
         main_layout = findViewById(R.id.main_layout);
@@ -165,10 +169,37 @@ public class Main2Activity extends AppCompatActivity
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //checkAnswer();
+                showProg();
+                checkAnswer();
                 loadNewQandI();
             }
         });
+    }
+
+    private void checkAnswer() {
+        boolean correct = false;
+        switch (currentQnA.getCorrect_option()) {
+            case 1:
+                correct = o1.isChecked();
+                break;
+            case 2:
+                correct = o2.isChecked();
+                break;
+            case 3:
+                correct = o3.isChecked();
+                break;
+            case 4:
+                correct = o4.isChecked();
+                break;
+        }
+        if (correct) {
+            total += 1;
+            result_color.setBackgroundColor(Color.GREEN);
+            Toast.makeText(this, "Correct Answer", Toast.LENGTH_SHORT).show();
+        } else {
+            result_color.setBackgroundColor(Color.RED);
+            Toast.makeText(this, "Wrong Answer", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showProg() {
@@ -182,11 +213,8 @@ public class Main2Activity extends AppCompatActivity
     }
 
     private void loadNewQandI() {
-
-        showProg();
         scoreTV.setText(String.valueOf(total));
-        next.setVisibility(View.VISIBLE);
-
+        Log.d("aaa", total + "");
         if (current_index >= database.size()) {
             Toast.makeText(this, "no more questions", Toast.LENGTH_SHORT).show();
             next.setVisibility(View.INVISIBLE);
