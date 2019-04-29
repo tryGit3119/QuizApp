@@ -6,10 +6,10 @@
 
     <ProgressBar
         android:id="@+id/add_prog"
-        android:layout_marginTop="300dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="300dp"
         android:visibility="invisible" />
 
     <LinearLayout
@@ -133,16 +133,32 @@
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/upload"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            android:background="#039BE5"
-            android:padding="8dp"
-            android:text="Upload"
-            android:textColor="#fff" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#039BE5"
+                android:padding="8dp"
+                android:text="Delete"
+                android:textColor="#fff"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#039BE5"
+                android:padding="8dp"
+                android:text="Upload"
+                android:textColor="#fff" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

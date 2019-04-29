@@ -8,6 +8,10 @@
             android:id="@+id/add_question"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Add Question" />
+        <item
+            android:id="@+id/update_quest"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Update Question Bank" />
     </group>
 
     <item android:title="Communicate">

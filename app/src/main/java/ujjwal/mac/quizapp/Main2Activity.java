@@ -93,7 +93,6 @@ public class Main2Activity extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mQnADatabaseReference = mFirebaseDatabase.getReference().child("questions");
 
-
         result_color = findViewById(R.id.my_toolbar);
         scoreTV = findViewById(R.id.score);
         progressBar = findViewById(R.id.pbHeaderProgress);
@@ -115,7 +114,6 @@ public class Main2Activity extends AppCompatActivity
         o2.setOnCheckedChangeListener(this);
         o3.setOnCheckedChangeListener(this);
         o4.setOnCheckedChangeListener(this);
-
     }
 
     private void loadQAndA() {
@@ -402,8 +400,8 @@ public class Main2Activity extends AppCompatActivity
         if (id == R.id.add_question) {
             // Handle the camera action
             startActivity(new Intent(Main2Activity.this, AddQuestion.class));
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.update_quest) {
+            startActivity(new Intent(Main2Activity.this, UpdateQuestions.class));
         } else if (id == R.id.nav_send) {
 
         }
