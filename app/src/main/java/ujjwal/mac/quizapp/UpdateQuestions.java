@@ -1,6 +1,6 @@
 package ujjwal.mac.quizapp;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -73,7 +73,6 @@ public class UpdateQuestions extends AppCompatActivity {
     }
 
     private class QuestionsAdapter extends BaseAdapter {
-
         @Override
         public int getCount() {
             return database.size();
@@ -96,7 +95,7 @@ public class UpdateQuestions extends AppCompatActivity {
             }
             final ProgressBar progressBar = view.findViewById(R.id.list_item_pb);
             ImageView imageView = view.findViewById(R.id.list_item_image);
-            QnA currentQnA = (QnA) getItem(i);
+            final QnA currentQnA = (QnA) getItem(i);
             Glide.with(UpdateQuestions.this).
                     asBitmap().
                     load(currentQnA.getPhotoUrl()).
@@ -116,10 +115,17 @@ public class UpdateQuestions extends AppCompatActivity {
                     }).
                     into(imageView);
             ((TextView) view.findViewById(R.id.list_item_questTV)).setText(currentQnA.getQuestion());
-
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle b = new Bundle();
+                    b.putSerializable("CURR_OBJ", currentQnA);
+                    Intent i = new Intent(UpdateQuestions.this, AddQuestion.class);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
             return view;
         }
     }
 }
-
-

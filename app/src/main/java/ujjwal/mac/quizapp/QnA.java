@@ -1,6 +1,8 @@
 package ujjwal.mac.quizapp;
 
-public class QnA {
+import java.io.Serializable;
+
+public class QnA implements Serializable {
     private String id, question, photoUrl, option1, option2, option3, option4;
     private int correct_option;
 
