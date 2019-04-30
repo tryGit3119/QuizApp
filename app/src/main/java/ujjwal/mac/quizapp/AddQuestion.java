@@ -77,7 +77,7 @@ public class AddQuestion extends AppCompatActivity {
         option3 = (EditText) findViewById(R.id.eto3);
         option4 = (EditText) findViewById(R.id.eto4);
         progressBar = findViewById(R.id.add_prog);
-        ImageButton mPhotoPickerButton = findViewById(R.id.photoPickerButton);
+        final ImageButton mPhotoPickerButton = findViewById(R.id.photoPickerButton);
         Button upload = findViewById(R.id.upload);
         questionField = findViewById(R.id.question);
         // Database objects instantiated
@@ -93,6 +93,15 @@ public class AddQuestion extends AppCompatActivity {
         if (edit) {
             delete.setVisibility(View.VISIBLE);
             loadFromObj();
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showProg();
+                    mQnADatabaseReference.child(current_qna.getId()).removeValue();
+                    hideProg();
+                    finish();
+                }
+            });
         }
         // Layout references
 

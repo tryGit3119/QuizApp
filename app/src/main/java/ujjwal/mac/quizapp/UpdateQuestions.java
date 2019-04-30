@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -52,12 +53,25 @@ public class UpdateQuestions extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                int i = findQnA(dataSnapshot.getValue(QnA.class).getId());
+                if (i != -1) {
+                    database.remove(i);
+                    database.add(dataSnapshot.getValue(QnA.class));
+                    questionsAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(UpdateQuestions.this, "Some error", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                int i = findQnA(dataSnapshot.getValue(QnA.class).getId());
+                if (i != -1) {
+                    database.remove(i);
+                    questionsAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(UpdateQuestions.this, "Some error", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -70,6 +84,14 @@ public class UpdateQuestions extends AppCompatActivity {
 
             }
         });
+    }
+
+    private int findQnA(String id) {
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i).getId().equals(id))
+                return i;
+        }
+        return -1;
     }
 
     private class QuestionsAdapter extends BaseAdapter {
@@ -128,4 +150,6 @@ public class UpdateQuestions extends AppCompatActivity {
             return view;
         }
     }
+
+
 }
