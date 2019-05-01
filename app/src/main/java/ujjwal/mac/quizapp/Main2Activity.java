@@ -89,7 +89,7 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        difficulty = getIntent().getIntExtra("DIFF", 3);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mQnADatabaseReference = mFirebaseDatabase.getReference().child("questions");
 

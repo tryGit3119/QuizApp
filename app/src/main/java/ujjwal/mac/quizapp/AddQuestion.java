@@ -72,10 +72,10 @@ public class AddQuestion extends AppCompatActivity {
             edit = true;
         }
         delete = findViewById(R.id.delete);
-        option1 = (EditText) findViewById(R.id.eto1);
-        option2 = (EditText) findViewById(R.id.eto2);
-        option3 = (EditText) findViewById(R.id.eto3);
-        option4 = (EditText) findViewById(R.id.eto4);
+        option1 = findViewById(R.id.eto1);
+        option2 = findViewById(R.id.eto2);
+        option3 = findViewById(R.id.eto3);
+        option4 = findViewById(R.id.eto4);
         progressBar = findViewById(R.id.add_prog);
         final ImageButton mPhotoPickerButton = findViewById(R.id.photoPickerButton);
         Button upload = findViewById(R.id.upload);
@@ -276,13 +276,12 @@ public class AddQuestion extends AppCompatActivity {
         String o2 = option2.getText().toString();
         String o3 = option3.getText().toString();
         String o4 = option4.getText().toString();
-        if (o1 == null || o1.isEmpty() ||
-                o2 == null || o2.isEmpty() ||
-                o3 == null || o3.isEmpty() ||
-                o4 == null || o4.isEmpty())
+        if (o1.isEmpty() || o2.isEmpty() ||
+                o3.isEmpty() || o4.isEmpty())
             return false;
 
-        return true;
+        return option1.isSelected() || option2.isSelected() ||
+                option3.isSelected() || option4.isSelected();
     }
 
     // Overriding onActivityResult for handling photo picker
