@@ -57,6 +57,7 @@ public class Main2Activity extends AppCompatActivity
     // game database
     private ArrayList<QnA> database;
 
+    ShakeListener shakeListener;
 
     // game variables
     private String question;
@@ -114,6 +115,43 @@ public class Main2Activity extends AppCompatActivity
         o2.setOnCheckedChangeListener(this);
         o3.setOnCheckedChangeListener(this);
         o4.setOnCheckedChangeListener(this);
+        shakeListener = new ShakeListener(this);
+        shakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
+            @Override
+            public void onShake() {
+                next.callOnClick();
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        if (shakeListener != null)
+            shakeListener.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        if (shakeListener != null)
+            shakeListener.pause();
+        super.onStop();
+    }
+
+    @Override
+    protected void onPostResume() {
+        if (shakeListener != null)
+            shakeListener.resume();
+        else Toast.makeText(this, "shake listner null", Toast.LENGTH_SHORT).show();
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onResume() {
+        if (shakeListener != null)
+            shakeListener.resume();
+        else Toast.makeText(this, "shake listner null", Toast.LENGTH_SHORT).show();
+        super.onResume();
     }
 
     private void loadQAndA() {
