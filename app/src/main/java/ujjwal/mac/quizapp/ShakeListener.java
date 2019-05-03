@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.Toast;
 
 public class ShakeListener implements SensorEventListener {
 
@@ -39,6 +40,7 @@ public class ShakeListener implements SensorEventListener {
         }
         boolean supported = mSensorMgr.registerListener(this, mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
         if (!supported) {
+            Toast.makeText(mContext, "Accelerometer not found", Toast.LENGTH_SHORT).show();
         }
     }
 

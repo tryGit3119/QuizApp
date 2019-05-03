@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -46,6 +47,7 @@ import java.util.Random;
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RadioButton.OnCheckedChangeListener {
 
+    int ScoreActivityRequestCode;
     RadioButton o1, o2, o3, o4;
     private static int FIRST_ENTRY_IN_DATABASE = 0;
     ProgressBar progressBar;
@@ -81,7 +83,7 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        ScoreActivityRequestCode = 1020;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -255,6 +257,7 @@ public class Main2Activity extends AppCompatActivity
             Toast.makeText(this, "no more questions", Toast.LENGTH_SHORT).show();
             next.setVisibility(View.INVISIBLE);
             hideProg();
+            startScoreActivity();
             return;
         }
         // pick a question from set
@@ -307,6 +310,19 @@ public class Main2Activity extends AppCompatActivity
         TextView questionView = (TextView) findViewById(R.id.question);
         questionView.setText(question);
         current_index += 1;
+    }
+
+    private void startScoreActivity() {
+        Intent i = new Intent(Main2Activity.this, ScoreActivity.class);
+        i.putExtra("SCORE", total);
+        startActivityForResult(i, ScoreActivityRequestCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ScoreActivityRequestCode)
+            finish();
     }
 
     private void displayImage(Bitmap btmp) {
