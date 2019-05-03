@@ -314,7 +314,7 @@ public class Main2Activity extends AppCompatActivity
 
     private void startScoreActivity() {
         Intent i = new Intent(Main2Activity.this, ScoreActivity.class);
-        i.putExtra("SCORE", total);
+        i.putExtra("SCORE", (total * 100) / database.size());
         startActivityForResult(i, ScoreActivityRequestCode);
     }
 

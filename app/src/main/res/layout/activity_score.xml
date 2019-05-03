@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="30"
         android:gravity="center_vertical|center_horizontal"
-        android:text="Your Score\n    is"
+        android:text="Your Score\nis"
         android:textSize="60sp" />
 
     <TextView
