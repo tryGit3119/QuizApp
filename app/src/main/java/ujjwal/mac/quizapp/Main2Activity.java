@@ -456,8 +456,8 @@ public class Main2Activity extends AppCompatActivity
             startActivity(new Intent(Main2Activity.this, AddQuestion.class));
         } else if (id == R.id.update_quest) {
             startActivity(new Intent(Main2Activity.this, UpdateQuestions.class));
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.history) {
+            startActivity(new Intent(Main2Activity.this, ScoreHistory.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

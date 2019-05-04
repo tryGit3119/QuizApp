@@ -12,6 +12,10 @@
             android:id="@+id/update_quest"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Update Question Bank" />
+        <item
+            android:id="@+id/history"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Gaming History"/>
     </group>
 
     <item android:title="Communicate">
